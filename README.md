@@ -24,10 +24,16 @@ git clone https://github.com/f-okd/velkoz
 cd C:\...\velkoz
 ```
 
-3. Run
+3. Add Gemini API key in .\env
+
+```
+GEMINI_API_KEY="<API_KEY>"
+```
+
+4. Run the project
 
 ```
 cargo run
 ```
 
-n.b. I dont even play Vel'Koz , I was an Irelia & Camille 2TP but it seemed like an interesting & lore appropriate name
+n.b. _I dont even play Vel'Koz , I was an Irelia & Camille 2TP but it seemed like an interesting & lore appropriate name_
