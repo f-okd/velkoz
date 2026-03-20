@@ -1,9 +1,9 @@
 use display_error_chain::DisplayErrorChain;
-use gemini_rust::Gemini;
-use std::env;
 use std::io;
 use std::process::ExitCode;
+mod clients;
 mod fs;
+use clients::common::ClientTrait;
 
 #[tokio::main]
 async fn main() -> ExitCode {
@@ -27,11 +27,10 @@ async fn main() -> ExitCode {
 
 async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
     dotenvy::dotenv()?;
-    let api_key = env::var("GEMINI_API_KEY").expect("GEMINI_API_KEY environment variable not set");
-    let client = Gemini::new(api_key)?;
     let system_prompt = fs::load_system_prompt();
+    let client = clients::gemini::Client::new(&system_prompt);
 
-    println!("Hi, Velk'oz here, what would you like to talk about today?\n");
+    println!("Hi, Vel'Koz here, what would you like to talk about today?\n");
 
     loop {
         let mut user_input = String::new();
@@ -45,24 +44,10 @@ async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
 
         send_loading_indicator();
 
-        let res = send_message_and_get_response(&user_input, &system_prompt, &client).await?;
+        let res = client.send_message_and_return_response(&user_input).await;
         println!("{}\n", res);
     }
     Ok(())
-}
-
-async fn send_message_and_get_response(
-    message: &str,
-    system_prompt: &str,
-    client: &Gemini,
-) -> Result<String, Box<dyn std::error::Error>> {
-    let res = client
-        .generate_content()
-        .with_system_prompt(system_prompt)
-        .with_user_message(message)
-        .execute()
-        .await?;
-    Ok(res.text())
 }
 
 fn send_loading_indicator() {
