@@ -1,4 +1,6 @@
+use core::panic;
 use display_error_chain::DisplayErrorChain;
+use std::env;
 use std::io;
 use std::process::ExitCode;
 mod clients;
@@ -28,7 +30,17 @@ async fn main() -> ExitCode {
 async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
     dotenvy::dotenv()?;
     let system_prompt = fs::load_system_prompt();
-    let client = clients::gemini::Client::new(&system_prompt);
+    let client;
+    let provider = parse_cli_args();
+
+    match provider.as_str() {
+        // Feel free to add support for other LLMs here. I personally can't be arsed.
+        "gemini" => client = clients::gemini::Client::new(&system_prompt),
+        _ => {
+            println!("No LLM specified, or unrecognised option. Defaulting to Gemini.");
+            client = clients::gemini::Client::new(&system_prompt)
+        }
+    }
 
     println!("Hi, Vel'Koz here, what would you like to talk about today?\n");
 
@@ -48,6 +60,27 @@ async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
         println!("{}\n", res);
     }
     Ok(())
+}
+
+fn parse_cli_args() -> String {
+    let mut cli_args = env::args();
+    let arg_len = cli_args.len();
+
+    match arg_len {
+        // User passed no arguments
+        1 => {
+            return "Gemini".to_string();
+        }
+        // User passed more than 1 argument
+        x if x > 2 => {
+            panic!(
+                "Vel'Koz only supports 1 CLI argument, that is your chosen LLM provider. Currently only --gemini is supported"
+            );
+        }
+        _ => {
+            return cli_args.nth(1).unwrap().to_lowercase();
+        }
+    }
 }
 
 fn send_loading_indicator() {
