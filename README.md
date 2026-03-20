@@ -1,7 +1,5 @@
 # Vel'Koz
 
-Vel'Koz seeks to understand by taking apart. velkoz seeks to understand by listening.
-
 This is an experimental CLI tool for non-directive therapy. It is simultaneously an excuse to put Rust on my CV and an exploration into a topic I found interesting - it's essentially a glorified system prompt but informed by research into the Rogerian approach to therapy.
 
 ### Prerequisites
