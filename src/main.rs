@@ -2,6 +2,7 @@ use core::panic;
 use display_error_chain::DisplayErrorChain;
 use std::env;
 use std::io;
+use std::process;
 use std::process::ExitCode;
 mod clients;
 mod fs;
@@ -35,7 +36,7 @@ async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
 
     match provider.as_str() {
         // Feel free to add support for other LLMs here. I personally can't be arsed.
-        "gemini" => client = clients::gemini::Client::new(&system_prompt),
+        "--gemini" => client = clients::gemini::Client::new(&system_prompt),
         _ => {
             println!("No LLM specified, or unrecognised option. Defaulting to Gemini.");
             client = clients::gemini::Client::new(&system_prompt)
@@ -74,11 +75,35 @@ fn parse_cli_args() -> String {
         // User passed more than 1 argument
         x if x > 2 => {
             panic!(
-                "Vel'Koz only supports 1 CLI argument, that is your chosen LLM provider. Currently only --gemini is supported"
+                "Vel'Koz only supports 1 CLI argument. Either --help or your chosen LLM provider; currently only --gemini is supported"
             );
         }
         _ => {
-            return cli_args.nth(1).unwrap().to_lowercase();
+            let arg = cli_args.nth(1).unwrap().to_lowercase();
+            if arg == "--help" {
+                println!(
+                    r#"
+                Vel'Koz - Experimental CLI tool for non-directive therapy
+
+                USAGE:
+                    velkoz [OPTIONS]
+
+                OPTIONS:
+                    --gemini    Use Google Gemini as the LLM provider (default)
+                    --help      Print this help message
+
+                COMMANDS (during chat):
+                    /quit       Exit the program
+
+                SETUP:
+                    Requires a GEMINI_API_KEY environment variable, or a .env file containing it.
+                    Customize Vel'Koz's personality by editing system_prompt.txt.
+                "#
+                );
+                process::exit(0);
+            } else {
+                return arg;
+            }
         }
     }
 }
