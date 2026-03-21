@@ -62,7 +62,7 @@ async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
         let res = client
             .send_message_and_return_response(&mut session_state, &user_input)
             .await;
-        println!("Vel'Koz: {}\n", res);
+        println!("----------------\n\x1b[1mVel'Koz\x1b[0m: {}\n", res);
     }
     Ok(())
 }
@@ -113,5 +113,5 @@ fn parse_cli_args() -> String {
 }
 
 fn send_loading_indicator() {
-    println!("Thinking...\n")
+    println!("\nThinking...\n")
 }
