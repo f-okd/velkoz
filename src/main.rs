@@ -6,6 +6,7 @@ use std::process;
 use std::process::ExitCode;
 mod clients;
 mod fs;
+mod types;
 use clients::common::ClientTrait;
 
 #[tokio::main]
@@ -30,9 +31,10 @@ async fn main() -> ExitCode {
 
 async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
     dotenvy::dotenv()?;
-    let system_prompt = fs::load_system_prompt();
     let client;
+    let system_prompt = fs::load_system_prompt();
     let provider = parse_cli_args();
+    let mut session_state: Vec<types::SessionMessage> = Vec::new();
 
     match provider.as_str() {
         // Feel free to add support for other LLMs here. I personally can't be arsed.
@@ -57,7 +59,9 @@ async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
 
         send_loading_indicator();
 
-        let res = client.send_message_and_return_response(&user_input).await;
+        let res = client
+            .send_message_and_return_response(&mut session_state, &user_input)
+            .await;
         println!("{}\n", res);
     }
     Ok(())
