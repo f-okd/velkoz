@@ -62,7 +62,7 @@ async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
         let res = client
             .send_message_and_return_response(&mut session_state, &user_input)
             .await;
-        println!("{}\n", res);
+        println!("Vel'Koz: {}\n", res);
     }
     Ok(())
 }
