@@ -5,8 +5,8 @@ use std::io;
 use std::process;
 use std::process::ExitCode;
 mod clients;
-mod fs;
 mod types;
+mod velkoz_fs;
 use clients::common::ClientTrait;
 
 #[tokio::main]
@@ -32,7 +32,7 @@ async fn main() -> ExitCode {
 async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
     dotenvy::dotenv()?;
     let client;
-    let system_prompt = fs::load_system_prompt();
+    let system_prompt = velkoz_fs::load_system_prompt();
     let provider = parse_cli_args();
     let mut session_state: Vec<types::SessionMessage> = Vec::new();
 
@@ -53,16 +53,26 @@ async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
             .read_line(&mut user_input)
             .expect("Failed to read line");
 
-        if user_input == "/quit" {
-            break;
+        user_input = user_input.trim().to_string();
+
+        match user_input.as_str() {
+            user_input if user_input.starts_with("/quit") => break,
+            user_input if user_input.starts_with("/save") => {
+                velkoz_fs::save_chat(&mut session_state, user_input);
+            }
+            user_input if user_input.starts_with("/load") => {
+                velkoz_fs::load_chat(&mut session_state, user_input);
+                println!("Session successfully loaded from <path>");
+            }
+            _ => {
+                send_loading_indicator();
+
+                let res = client
+                    .send_message_and_return_response(&mut session_state, &user_input)
+                    .await;
+                println!("----------------\nVel'Koz: {}\n", res);
+            }
         }
-
-        send_loading_indicator();
-
-        let res = client
-            .send_message_and_return_response(&mut session_state, &user_input)
-            .await;
-        println!("----------------\n\x1b[1mVel'Koz\x1b[0m: {}\n", res);
     }
     Ok(())
 }
