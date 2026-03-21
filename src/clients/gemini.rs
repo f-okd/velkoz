@@ -48,7 +48,7 @@ impl ClientTrait for Client {
         }
 
         let res: Result<gemini_rust::GenerationResponse, gemini_rust::ClientError> =
-            chat_stub.with_user_message(message).execute().await;
+            chat_stub.execute().await;
 
         return match res {
             Ok(res) => {
