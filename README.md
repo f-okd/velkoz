@@ -35,4 +35,4 @@ cargo run
 # alternatively: cargo run -- --gemini
 ```
 
-n.b. _I dont even play Vel'Koz , I was an Irelia & Camille 2TP but it seemed like an interesting & lore appropriate name_
+n.b. _I dont even play Vel'Koz , [I was an Irelia & Camille 2TP](https://op.gg/lol/summoners/euw/burton%20guster-koods) but it seemed like an interesting & lore appropriate name_
