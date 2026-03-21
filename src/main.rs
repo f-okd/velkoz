@@ -31,17 +31,18 @@ async fn main() -> ExitCode {
 
 async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
     dotenvy::dotenv()?;
-    let client;
+    let client: Box<dyn ClientTrait>;
     let system_prompt = velkoz_fs::load_system_prompt();
     let provider = parse_cli_args();
     let mut session_state: Vec<types::SessionMessage> = Vec::new();
 
     match provider.as_str() {
         // Feel free to add support for other LLMs here. I personally can't be arsed.
-        "--gemini" => client = clients::gemini::Client::new(&system_prompt),
+        "--local" => client = Box::new(clients::ollama::Client::new(&system_prompt)),
+        "--gemini" => client = Box::new(clients::gemini::Client::new(&system_prompt)),
         _ => {
             println!("No LLM specified, or unrecognised option. Defaulting to Gemini.");
-            client = clients::gemini::Client::new(&system_prompt)
+            client = Box::new(clients::gemini::Client::new(&system_prompt))
         }
     }
 

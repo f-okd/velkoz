@@ -1,6 +1,7 @@
 use crate::types::{Author, SessionMessage};
 
 use super::common::ClientTrait;
+use async_trait::async_trait;
 use gemini_rust::{ContentBuilder, Gemini};
 use std::env;
 
@@ -24,6 +25,8 @@ impl Client {
         }
     }
 }
+
+#[async_trait]
 impl ClientTrait for Client {
     async fn send_message_and_return_response(
         &self,
