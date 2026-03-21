@@ -62,7 +62,6 @@ async fn do_main() -> Result<(), Box<dyn std::error::Error>> {
             }
             user_input if user_input.starts_with("/load") => {
                 velkoz_fs::load_chat(&mut session_state, user_input);
-                println!("Session successfully loaded from <path>");
             }
             _ => {
                 send_loading_indicator();
