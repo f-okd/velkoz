@@ -104,13 +104,17 @@ fn parse_cli_args() -> String {
 
                 OPTIONS:
                     --gemini    Use Google Gemini as the LLM provider (default)
+                    --local     Use local model as LLM provider. Forwards requests to local Ollama /chat endpoint. Requires you to have launched model.
                     --help      Print this help message
 
                 COMMANDS (during chat):
-                    /quit       Exit the program
+                    /quit           Exit the program
+                    /save <name>    Saves the current conversation to a file named <name>
+                    /load <name>    Loads a conversation from a file named <name> into the current session
 
                 SETUP:
                     Requires a GEMINI_API_KEY environment variable, or a .env file containing it.
+                    For local runs you need to have configured Ollama. See the readme for more information.
                     Customize Vel'Koz's personality by editing system_prompt.txt.
                 "#
                 );
