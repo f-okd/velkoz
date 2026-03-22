@@ -60,6 +60,7 @@ GEMINI_API_KEY="<API_KEY>"
 ```
 
 **Configure Ollama model**
+
 Phi4-mini is recommended as a good consumer-range model. Pick a model from https://ollama.com/library and install it locally with:
 
 ```
