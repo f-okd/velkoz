@@ -46,8 +46,9 @@ cargo run
 - `--local`: Starts a chat using the locally configured LLM
 
 **In-chat commands**
-/save <path>: Saves conversation history to a file at specifed path.
-/load <path>: Loads converstaion history from a file at specified path. Overwrites current session.
+
+- `"/save <path>"`: Saves conversation history to a file at specifed path.
+- `"/load <path>"`: Loads converstaion history from a file at specified path. Overwrites current session.
 
 ### Environment Variables & Configuration
 
