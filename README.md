@@ -1,6 +1,7 @@
 # Vel'Koz
+Tldr: Glorified system prompt/AI Wrapper. Hobby project to familiarise myself with Rust 
 
-This is an experimental CLI tool for non-directive therapy. It is simultaneously an excuse to put Rust on my CV and an exploration into a topic I found interesting. It currently supports using Google's Gemini LLM and user hosted LLMs for complete privacy.
+This is an experimental CLI tool for non-directive therapy. It currently supports using Google's Gemini LLM and user hosted LLMs for complete privacy.
 
 Note: It has not tested on linux or mac. If you encounter difficulties on those systems feel free to fork & raise pull requests.
 
