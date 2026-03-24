@@ -3,8 +3,6 @@ Tldr: Glorified system prompt/AI Wrapper. Hobby project to familiarise myself wi
 
 This is an experimental CLI tool for non-directive therapy. It currently supports using Google's Gemini LLM and user hosted LLMs for complete privacy.
 
-Note: It has not tested on linux or mac. If you encounter difficulties on those systems feel free to fork & raise pull requests.
-
 ## Prerequisites
 
 1. Install Rust.
